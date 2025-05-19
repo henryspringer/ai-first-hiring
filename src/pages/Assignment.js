@@ -12,14 +12,15 @@ import {
   StepLabel,
   Alert,
 } from '@mui/material';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 // This would typically come from an API or database
 const assignments = {
   ae: {
     title: 'Account Executive - SMB AI Assignment',
+    task: 'You have 10 minutes to prepare 3 different value propositions for switching to Shopify.',
     scenario: [
-      'You have 10 minutes to prepare a value proposition for Glade Optics',
-      'The merchant, Glade Optics, currently uses a competitor\'s platform',
+      'The merchant, Glade Optics, currently uses Squarespace',
       'They have 10 employees',
       'They are looking to scale their business internationally',
       'They have concerns about migration complexity',
@@ -39,18 +40,11 @@ const assignments = {
   },
   sdr: {
     title: 'SDR AI Assignment',
+    task: 'You have 10 minutes to document a targeted outreach strategy for this prospect.',
     scenario: [
-      'This assignment is designed to assess your approach to strategic prospecting and outreach.',
-      '',
-      'Scenario: Your target is a mid-market energy drink brand (BUM Energy) with $11M annual revenue currently using a competitor platform (WooCommerce). Their main challenges include limited international expansion capabilities, high platform maintenance costs, and complex inventory management. You have access to information such as their company website, social media profiles, industry reports, and competitor analysis tools.',
-      '',
-      'Task: You have 10 minutes to document a targeted outreach strategy for this prospect.',
-      '',
-      'Focus on demonstrating your process for gathering and analyzing prospect information, how you would tailor your approach, and how you would identify and articulate key benefits.',
-      '',
-      'NOTES:',
-      'You can use any tool or resource to prepare this strategy.',
-      'Please format your response as a one-page word doc summary.'
+      'Your target is a mid-market energy drink brand (BUM Energy)',
+      '$11M annual revenue currently using a competitor platform (WooCommerce).',
+      'Their main challenges include limited international expansion capabilities, high platform maintenance costs, and complex inventory management.',
     ],
     successCriteria: [
       'Uses AI to identify and research prospects',
@@ -67,6 +61,7 @@ const assignments = {
   },
   se: {
     title: 'Solution Engineer AI Assignment',
+    task: 'Coming Soon',
     scenario: [
       'Coming Soon',
     ],
@@ -79,6 +74,7 @@ const assignments = {
   },
   msm: {
     title: 'Merchant Success Manager AI Assignment',
+    task: 'Coming Soon',
     scenario: [
       'Coming Soon',
     ],
@@ -126,10 +122,30 @@ function Assignment() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={0} sx={{ p: 4, mb: 4, bgcolor: 'primary.main', color: 'white' }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          {assignment.title}
-        </Typography>
+      <Paper 
+        elevation={0}
+        sx={{
+          p: 4,
+          mb: 4,
+          bgcolor: '#e6f9f0', // soft green
+          borderRadius: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: { xs: 'wrap', md: 'nowrap' },
+        }}
+      >
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography variant="h3" component="h1" gutterBottom sx={{ color: 'black', fontWeight: 700 }}>
+            {assignment.title}
+          </Typography>
+          <Typography variant="h5" sx={{ color: 'black', fontWeight: 500, mb: 2 }}>
+            Accelerate Shopify's Growth with AI-First Talent
+          </Typography>
+        </Box>
+        <Box sx={{ flexShrink: 0, ml: { md: 4 }, mt: { xs: 4, md: 0 }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <RocketLaunchIcon sx={{ fontSize: 100, color: '#2afb7cff' }} />
+        </Box>
       </Paper>
 
       <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
@@ -171,6 +187,18 @@ function Assignment() {
               </li>
             </ul>
           </Paper>
+
+          {/* Render Task section for any role with a task */}
+          {assignment.task && (
+            <>
+              <Typography variant="h6" gutterBottom>
+                Task
+              </Typography>
+              <Paper sx={{ p: 3, mb: 4 }}>
+                <Typography color="text.primary">{assignment.task}</Typography>
+              </Paper>
+            </>
+          )}
 
           <Typography variant="h6" gutterBottom>
             Scenario
@@ -215,64 +243,36 @@ function Assignment() {
 
       {activeStep === 1 && (
         <Box>
-          <Paper sx={{ p: 3, mb: 4 }}>
-            <Typography variant="h6" gutterBottom color="text.primary">
-              Interview Structure (30 minutes total)
+          <Typography variant="h6" gutterBottom color="text.primary" sx={{ mb: 2 }}>
+            Interview Structure (30 minutes total)
+          </Typography>
+          <Paper sx={{ p: 3, mb: 3, borderLeft: '6px solid #2afb7cff', bgcolor: '#f8fff9' }}>
+            <Typography variant="subtitle1" color="text.primary" gutterBottom sx={{ fontWeight: 600 }}>
+              1. Introduction & Assignment Overview (10 minutes)
             </Typography>
-            <Box sx={{ pl: 2 }}>
-              <Typography variant="subtitle1" color="text.primary" gutterBottom>
-                1. Introduction and Assignment Overview (10 minutes)
-              </Typography>
-              <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                <li>
-                  <Typography color="text.primary">
-                    Welcome the candidate and explain the purpose of the AI-first interview
-                  </Typography>
-                </li>
-                <li>
-                  <Typography color="text.primary">
-                    Review the assignment scenario and objectives
-                  </Typography>
-                </li>
-                <li>
-                  <Typography color="text.primary">
-                    Clarify any questions about the task
-                  </Typography>
-                </li>
-              </ul>
-
-              <Typography variant="subtitle1" color="text.primary" gutterBottom sx={{ mt: 2 }}>
-                2. Candidate Assignment (10 minutes)
-              </Typography>
-              <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                <li>
-                  <Typography color="text.primary">
-                    Candidate works independently on the assignment
-                  </Typography>
-                </li>
-              </ul>
-
-              <Typography variant="subtitle1" color="text.primary" gutterBottom sx={{ mt: 2 }}>
-                3. Discussion and Assessment (10 minutes)
-              </Typography>
-              <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                <li>
-                  <Typography color="text.primary">
-                    Discuss the candidate's approach and solution
-                  </Typography>
-                </li>
-                <li>
-                  <Typography color="text.primary">
-                    Ask about their use of AI tools
-                  </Typography>
-                </li>
-                <li>
-                  <Typography color="text.primary">
-                    Assess their AI-first thinking and capabilities
-                  </Typography>
-                </li>
-              </ul>
-            </Box>
+            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+              <li><Typography color="text.primary">Welcome the candidate and explain the purpose of the AI-first interview</Typography></li>
+              <li><Typography color="text.primary">Review the assignment scenario and objectives</Typography></li>
+              <li><Typography color="text.primary">Clarify any questions about the task</Typography></li>
+            </ul>
+          </Paper>
+          <Paper sx={{ p: 3, mb: 3, borderLeft: '6px solid #2afb7cff', bgcolor: '#f8fff9' }}>
+            <Typography variant="subtitle1" color="text.primary" gutterBottom sx={{ fontWeight: 600 }}>
+              2. Candidate Assignment (10 minutes)
+            </Typography>
+            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+              <li><Typography color="text.primary">Candidate works independently on the assignment</Typography></li>
+            </ul>
+          </Paper>
+          <Paper sx={{ p: 3, mb: 3, borderLeft: '6px solid #2afb7cff', bgcolor: '#f8fff9' }}>
+            <Typography variant="subtitle1" color="text.primary" gutterBottom sx={{ fontWeight: 600 }}>
+              3. Discussion & Assessment (10 minutes)
+            </Typography>
+            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+              <li><Typography color="text.primary">Discuss the candidate's approach and solution</Typography></li>
+              <li><Typography color="text.primary">Ask about their use of AI tools</Typography></li>
+              <li><Typography color="text.primary">Assess their AI-first thinking and capabilities</Typography></li>
+            </ul>
           </Paper>
         </Box>
       )}
@@ -374,7 +374,7 @@ function Assignment() {
         <Button
           variant="contained"
           onClick={handleNext}
-          disabled={activeStep === 2 && (!transcript || !output)}
+          disabled={activeStep === 2 && (!transcript && !output)}
           sx={{ color: 'black', textTransform: 'none', fontWeight: 600, borderRadius: '16px' }}
         >
           {activeStep === steps.length - 1 ? 'Submit for Analysis' : 'Next'}

@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Button,
 } from '@mui/material';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 function Analysis() {
   const location = useLocation();
@@ -17,25 +18,51 @@ function Analysis() {
 
   // Helper functions for generating analysis text
   const generateRationale = (score, counts, examples) => {
-    if (score >= 9) return "Exceptional AI integration with clear examples of tool usage and implementation";
-    if (score >= 7) return "Strong AI usage with specific examples of implementation";
-    if (score >= 5) return "Basic AI usage with some implementation examples";
-    if (score >= 3) return "Limited AI usage with minimal implementation";
-    return "No significant AI usage detected";
+    // Narrative summary for leadership
+    if (score >= 9) {
+      return (
+        "Exceptional AI-first approach. The candidate demonstrated reflexive and advanced use of AI tools throughout the interview. " +
+        (examples.tools.length > 0 ? `They explicitly referenced tools such as: ${examples.tools.slice(0, 3).join(', ')}. ` : '') +
+        (examples.actions.length > 0 ? `They described using AI for tasks like: ${examples.actions.slice(0, 3).join(', ')}. ` : '') +
+        "Their workflow shows deep comfort with leveraging AI to accelerate and improve their work."
+      );
+    }
+    if (score >= 7) {
+      return (
+        "Strong AI usage. The candidate clearly integrates AI tools into their workflow, mentioning specific examples such as " +
+        (examples.tools.length > 0 ? `${examples.tools.slice(0, 2).join(', ')}` : 'AI tools') +
+        ". They provided details on how they use AI to research, generate, or improve outputs, and showed a solid understanding of AI's value."
+      );
+    }
+    if (score >= 5) {
+      return (
+        "Basic AI usage. The candidate referenced AI tools or concepts, but examples were limited or generic. There is some evidence of implementation, but opportunities remain to deepen their AI-first approach."
+      );
+    }
+    if (score >= 3) {
+      return (
+        "Limited AI usage. The candidate made minimal mention of AI tools or concepts, and did not provide clear examples of implementation. Manual processes were more prominent than AI-driven approaches."
+      );
+    }
+    return "No significant AI usage detected. The candidate did not mention or demonstrate the use of AI tools or concepts.";
   };
 
   const generateJustification = (score, counts, examples) => {
-    const parts = [];
+    // Narrative evidence summary
+    let output = '';
     if (examples.tools.length > 0) {
-      parts.push(`Used AI tools: ${examples.tools.join(', ')}`);
+      output += `AI tool mentions: ${examples.tools.slice(0, 3).join(', ')}. `;
     }
     if (examples.actions.length > 0) {
-      parts.push(`Implemented AI for: ${examples.actions.join(', ')}`);
+      output += `AI implementation examples: ${examples.actions.slice(0, 3).join(', ')}. `;
     }
     if (examples.concepts.length > 0) {
-      parts.push(`Demonstrated understanding of: ${examples.concepts.join(', ')}`);
+      output += `AI concepts referenced: ${examples.concepts.slice(0, 2).join(', ')}. `;
     }
-    return parts.join(". ");
+    if (!output) {
+      output = 'No explicit AI tool usage or implementation was referenced.';
+    }
+    return output.trim();
   };
 
   const generateStrengths = (counts, examples) => {
@@ -102,38 +129,47 @@ function Analysis() {
     // Define AI-related keywords and their categories with context
     const aiKeywords = {
       tools: [
-        { term: 'chatgpt', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'gpt', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'claude', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'bard', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'copilot', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'github copilot', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'chat.shopify.io', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'cursor', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'claude code', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'proxy', context: ['used', 'using', 'utilized', 'with'] },
-        { term: 'ai', context: ['used', 'using', 'utilized', 'with', 'for', 'to'] }
+        // ChatGPT and variants
+        { term: /chat\s*-?gpt|gpt-4|gpt4|gpt 4|open\s*ai/i, context: ['used', 'using', 'utilized', 'with', 'ran', 'asked', 'leveraged', 'pasted', 'generated', 'wrote', 'summarized', 'analyzed'] },
+        // Claude and variants
+        { term: /claude|claude 2|anthropic/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Bard and variants
+        { term: /bard|google bard/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Copilot and variants
+        { term: /co\s*-?pilot|copilot|github copilot|ms copilot|microsoft copilot/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Cursor
+        { term: /cursor|cursor ai/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Perplexity
+        { term: /perplexity|perplexity ai/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Llama
+        { term: /llama|llama 2|meta llama/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Gemini
+        { term: /gemini|google gemini/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Company/Platform-specific
+        { term: /salesforce einstein|hubspot ai|notion ai|google workspace ai|microsoft 365 copilot|slack ai|zoom ai|figma ai|canva ai|shopify magic|chat\.shopify\.io/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Generic
+        { term: /ai assistant|ai chatbot|ai model|ai agent|virtual assistant|bot/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Misspellings and abbreviations
+        { term: /chagpt|chaptgpt|chapt gpt|co-pilot|co pilot|bard ai|claud|cloud/i, context: ['used', 'using', 'utilized', 'with'] },
+        // Simple AI
+        { term: /ai|a\.i\./i, context: ['used', 'using', 'utilized', 'with', 'for', 'to', 'ran', 'asked', 'leveraged', 'pasted', 'generated', 'wrote', 'summarized', 'analyzed'] },
       ],
       actions: [
-        { term: 'prompt', context: ['created', 'used', 'wrote', 'with'] },
-        { term: 'generate', context: ['used to', 'to', 'for'] },
-        { term: 'analyze', context: ['used to', 'to', 'for'] },
-        { term: 'summarize', context: ['used to', 'to', 'for'] },
-        { term: 'research', context: ['used to', 'to', 'for'] },
-        { term: 'automate', context: ['used to', 'to', 'for'] },
-        { term: 'optimize', context: ['used to', 'to', 'for'] },
-        { term: 'enhance', context: ['used to', 'to', 'for'] },
-        { term: 'improve', context: ['used to', 'to', 'for'] },
-        { term: 'streamline', context: ['used to', 'to', 'for'] }
+        { term: /prompt|prompt engineering|prompted|prompting/i, context: ['created', 'used', 'wrote', 'with'] },
+        { term: /generate|generated|generating/i, context: ['used to', 'to', 'for'] },
+        { term: /analyze|analyzed|analyzing/i, context: ['used to', 'to', 'for'] },
+        { term: /summarize|summarized|summarizing/i, context: ['used to', 'to', 'for'] },
+        { term: /research|researched|researching/i, context: ['used to', 'to', 'for'] },
+        { term: /automate|automated|automating|automation/i, context: ['used to', 'to', 'for'] },
+        { term: /optimize|optimized|optimizing/i, context: ['used to', 'to', 'for'] },
+        { term: /enhance|enhanced|enhancing/i, context: ['used to', 'to', 'for'] },
+        { term: /improve|improved|improving/i, context: ['used to', 'to', 'for'] },
+        { term: /streamline|streamlined|streamlining/i, context: ['used to', 'to', 'for'] },
+        { term: /auto-?generate|auto reply|auto summarize/i, context: ['used', 'using', 'utilized', 'with'] },
       ],
       concepts: [
-        { term: 'artificial intelligence', context: ['used', 'using', 'with', 'for'] },
-        { term: 'machine learning', context: ['used', 'using', 'with', 'for'] },
-        { term: 'ml', context: ['used', 'using', 'with', 'for'] },
-        { term: 'natural language', context: ['used', 'using', 'with', 'for'] },
-        { term: 'nlp', context: ['used', 'using', 'with', 'for'] },
-        { term: 'automation', context: ['used', 'using', 'with', 'for'] },
-        { term: 'algorithm', context: ['used', 'using', 'with', 'for'] }
+        { term: /artificial intelligence|machine learning|ml|deep learning|neural network|large language model|llm|natural language|nlp|algorithm/i, context: ['used', 'using', 'with', 'for'] },
+        { term: /ai-powered|ai-driven|ai-enabled|powered by ai|using an llm|using a chatbot/i, context: ['used', 'using', 'with', 'for'] },
       ]
     };
 
@@ -156,13 +192,24 @@ function Analysis() {
     // Count occurrences of each keyword with context
     Object.entries(aiKeywords).forEach(([category, keywords]) => {
       keywords.forEach(({ term, context }) => {
-        // Look for the term with its context
         context.forEach(ctx => {
-          const regex = new RegExp(`\\b${ctx}\\s+${term}\\b|\\b${term}\\s+${ctx}\\b`, 'gi');
-          const matches = text.match(regex);
-          if (matches) {
-            keywordCounts[category] += matches.length;
-            foundExamples[category].push(...matches);
+          let matches = [];
+          // Allow up to 3 words between context and term (e.g., 'used AI', 'had AI create', 'used AI to')
+          if (term instanceof RegExp) {
+            // For regex terms like chatgpt/chat gpt
+            const regex = new RegExp(`\\b${ctx}\\b(?:\\W+\\w+){0,3}?\\W+${term.source}\\b`, 'gi');
+            matches = text.match(regex);
+            if (matches) {
+              keywordCounts[category] += matches.length;
+              foundExamples[category].push(...matches);
+            }
+          } else {
+            const regex = new RegExp(`\\b${ctx}\\b(?:\\W+\\w+){0,3}?\\W+${term}\\b`, 'gi');
+            matches = text.match(regex);
+            if (matches) {
+              keywordCounts[category] += matches.length;
+              foundExamples[category].push(...matches);
+            }
           }
         });
       });
@@ -179,6 +226,51 @@ function Analysis() {
       (actionScore * 0.3) + // 30% weight for implementation
       (conceptScore * 0.2) // 20% weight for understanding
     );
+
+    // Fallback: If no AI evidence found, force lowest score and rationale
+    if (
+      keywordCounts.tools === 0 &&
+      keywordCounts.actions === 0 &&
+      keywordCounts.concepts === 0
+    ) {
+      return {
+        overallScore: 1,
+        rationale: "No significant AI usage detected. The candidate did not mention or demonstrate the use of AI tools or concepts.",
+        scoringLevel: "1-2",
+        justification: "No explicit AI tool usage or implementation was referenced.",
+        aiUsage: "No",
+        keyStrengths: [],
+        areasForImprovement: [
+          {
+            area: "AI Tool Usage",
+            currentState: "No AI tools mentioned",
+            recommendation: "Explore and leverage AI tools to improve workflow and productivity."
+          }
+        ],
+        roleId,
+        foundExamples,
+        detailedAnalysis: {
+          "AI Tool Usage": {
+            assessment: 1,
+            scoringLevel: "1-2",
+            evidence: "No tool usage found.",
+            impact: "No AI tool usage detected."
+          },
+          "AI Implementation": {
+            assessment: 1,
+            scoringLevel: "1-2",
+            evidence: "No implementation found.",
+            impact: "No AI implementation detected."
+          },
+          "AI Understanding": {
+            assessment: 1,
+            scoringLevel: "1-2",
+            evidence: "No AI concepts found.",
+            impact: "No AI understanding detected."
+          }
+        }
+      };
+    }
 
     // Determine scoring level
     let scoringLevel;
@@ -253,7 +345,7 @@ function Analysis() {
     setTimeout(() => {
       const { transcript, output, roleId } = location.state || {};
       
-      if (!transcript || !output) {
+      if (!transcript && !output) {
         navigate('/');
         return;
       }
@@ -277,102 +369,169 @@ function Analysis() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={0} sx={{ p: 4, mb: 4, bgcolor: 'primary.main', color: 'white' }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          AI Readiness Analysis
-        </Typography>
+      <Paper 
+        elevation={0}
+        sx={{
+          p: 4,
+          mb: 4,
+          bgcolor: '#e6f9f0', // soft green
+          borderRadius: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: { xs: 'wrap', md: 'nowrap' },
+        }}
+      >
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography variant="h3" component="h1" gutterBottom sx={{ color: 'black', fontWeight: 700 }}>
+            AI Readiness Analysis
+          </Typography>
+          <Typography variant="h5" sx={{ color: 'black', fontWeight: 500, mb: 2 }}>
+            Accelerate Shopify's Growth with AI-First Talent
+          </Typography>
+        </Box>
+        <Box sx={{ flexShrink: 0, ml: { md: 4 }, mt: { xs: 4, md: 0 }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <RocketLaunchIcon sx={{ fontSize: 100, color: '#2afb7cff' }} />
+        </Box>
       </Paper>
 
-      <Paper sx={{ p: 4, mb: 4 }}>
+      {/* Overall Score Card */}
+      <Paper sx={{
+        p: 4,
+        mb: 4,
+        borderRadius: 2,
+        bgcolor: '#e6f9f0',
+        borderLeft: '8px solid #2afb7cff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+      }}>
+        <Box sx={{
+          bgcolor: '#2afb7cff',
+          color: 'black',
+          borderRadius: '16px',
+          px: 4,
+          py: 2,
+          fontWeight: 700,
+          fontSize: 36,
+          mr: 4,
+          minWidth: 120,
+          textAlign: 'center',
+          boxShadow: 2,
+        }}>
+          {analysis.overallScore}/10
+        </Box>
+        <Box>
+          <Typography variant="h5" color="text.primary" sx={{ fontWeight: 700 }}>
+            Overall Score
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            AI Readiness
+          </Typography>
+        </Box>
+      </Paper>
+
+      {/* Summary Card */}
+      <Paper sx={{ p: 4, mb: 4, borderRadius: 2 }}>
         <Typography variant="h5" color="text.primary" gutterBottom>
-          Overall Score: {analysis.overallScore}/10
+          Summary
         </Typography>
         <Typography variant="body1" color="text.primary" paragraph>
           {analysis.rationale}
         </Typography>
-        <Typography variant="subtitle1" color="text.primary" gutterBottom>
-          Scoring Level: {analysis.scoringLevel}
-        </Typography>
-        <Typography variant="body1" color="text.primary" paragraph>
-          {analysis.justification}
-        </Typography>
       </Paper>
 
-      <Paper sx={{ p: 4, mb: 4 }}>
+      {/* Keyword Detection Card */}
+      <Paper sx={{ p: 4, mb: 4, borderRadius: 2 }}>
         <Typography variant="h5" color="text.primary" gutterBottom>
-          Key Strengths
+          Keyword Detection
         </Typography>
-        {analysis.keyStrengths.map((strength, index) => (
-          <Box key={index} sx={{ mb: 2 }}>
-            <Typography variant="subtitle1" color="text.primary">
-              {strength.strength}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Example: {strength.example}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Impact: {strength.impact}
-            </Typography>
-          </Box>
-        ))}
+        <ul style={{ margin: 0, paddingLeft: '20px' }}>
+          {analysis.foundExamples?.tools?.length > 0 && (
+            <li>
+              <strong>AI tool mentions:</strong> {analysis.foundExamples.tools.slice(0, 5).join(', ')}
+            </li>
+          )}
+          {analysis.foundExamples?.actions?.length > 0 && (
+            <li>
+              <strong>AI actions:</strong> {analysis.foundExamples.actions.slice(0, 5).join(', ')}
+            </li>
+          )}
+          {analysis.foundExamples?.concepts?.length > 0 && (
+            <li>
+              <strong>AI concepts:</strong> {analysis.foundExamples.concepts.slice(0, 5).join(', ')}
+            </li>
+          )}
+          {(!analysis.foundExamples?.tools?.length && !analysis.foundExamples?.actions?.length && !analysis.foundExamples?.concepts?.length) && (
+            <li>No significant AI keywords detected.</li>
+          )}
+        </ul>
       </Paper>
 
-      <Paper sx={{ p: 4, mb: 4 }}>
+      {/* Scoring Card */}
+      <Paper sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+        <Typography variant="h5" color="text.primary" gutterBottom>
+          Scoring
+        </Typography>
+        <ul style={{ margin: 0, paddingLeft: '20px' }}>
+          <li>AI Tool Usage Score: <strong>{analysis.detailedAnalysis['AI Tool Usage'].assessment}/10</strong></li>
+          <li>AI Implementation Score: <strong>{analysis.detailedAnalysis['AI Implementation'].assessment}/10</strong></li>
+          <li>AI Understanding Score: <strong>{analysis.detailedAnalysis['AI Understanding'].assessment}/10</strong></li>
+          <li>The more times these are mentioned in the right context, the higher the scores for tool usage and implementation.</li>
+        </ul>
+      </Paper>
+
+      {/* Output Card */}
+      <Paper sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+        <Typography variant="h5" color="text.primary" gutterBottom>
+          Output
+        </Typography>
+        <ul style={{ margin: 0, paddingLeft: '20px' }}>
+          {analysis.justification.split('. ').map((point, idx) => (
+            point.trim() && <li key={idx}>{point.trim().replace(/\.$/, '')}.</li>
+          ))}
+        </ul>
+      </Paper>
+
+      {/* Strengths and Evidence Card */}
+      <Paper sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+        <Typography variant="h5" color="text.primary" gutterBottom>
+          Strengths and Evidence
+        </Typography>
+        <ul style={{ margin: 0, paddingLeft: '20px' }}>
+          {analysis.keyStrengths && analysis.keyStrengths.length > 0 ? (
+            analysis.keyStrengths.map((strength, idx) => (
+              <li key={idx}>
+                <strong>{strength.strength}:</strong> {strength.example} <em>({strength.impact})</em>
+              </li>
+            ))
+          ) : <li>No explicit strengths detected.</li>}
+        </ul>
+      </Paper>
+
+      {/* Areas for Improvement Card */}
+      <Paper sx={{ p: 4, mb: 4, borderRadius: 2 }}>
         <Typography variant="h5" color="text.primary" gutterBottom>
           Areas for Improvement
         </Typography>
-        {analysis.areasForImprovement.map((area, index) => (
-          <Box key={index} sx={{ mb: 2 }}>
-            <Typography variant="subtitle1" color="text.primary">
-              {area.area}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Current State: {area.currentState}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Recommendation: {area.recommendation}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Suggested Tools: {area.tools}
-            </Typography>
-          </Box>
-        ))}
+        <ul style={{ margin: 0, paddingLeft: '20px' }}>
+          {analysis.areasForImprovement && analysis.areasForImprovement.length > 0 ? (
+            analysis.areasForImprovement.map((area, idx) => (
+              <li key={idx}>
+                <strong>{area.area}:</strong> {area.recommendation} <em>({area.currentState})</em>
+              </li>
+            ))
+          ) : <li>No major areas for improvement detected.</li>}
+        </ul>
       </Paper>
 
-      <Paper sx={{ p: 4, mb: 4 }}>
-        <Typography variant="h5" color="text.primary" gutterBottom>
-          Detailed Analysis
-        </Typography>
-        {Object.entries(analysis.detailedAnalysis).map(([criterion, details]) => (
-          <Box key={criterion} sx={{ mb: 3 }}>
-            <Typography variant="subtitle1" color="text.primary">
-              {criterion}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Assessment: {details.assessment}/10
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Evidence: {details.evidence}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Impact: {details.impact}
-            </Typography>
-          </Box>
-        ))}
-      </Paper>
-
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
-        <Button
-          variant="outlined"
-          onClick={() => navigate('/')}
-        >
-          Back to Home
-        </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
         <Button
           variant="contained"
-          onClick={() => window.print()}
+          sx={{ color: 'black', fontWeight: 600, borderRadius: '16px', textTransform: 'none' }}
+          onClick={() => navigate('/')}
         >
-          Print Report
+          Back to Home Page
         </Button>
       </Box>
     </Container>

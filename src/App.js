@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Assignment from './pages/Assignment';
 import Analysis from './pages/Analysis';
 import Login from './pages/Login';
+import ScrollToTop from './ScrollToTop';
 
 // Create a theme with the specified green accent
 const theme = createTheme({
@@ -45,6 +46,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
+        <ScrollToTop />
         <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
           <Routes>
             <Route path="/" element={<Home />} />

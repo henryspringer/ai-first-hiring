@@ -96,12 +96,19 @@ function Home() {
             Accelerate Shopify's Growth with AI-First Talent
           </Typography>
           <Typography variant="body1" sx={{ color: 'black', maxWidth: 600 }}>
-            Welcome to the AI First Hiring Portal. This tool helps you assess candidates' natural inclination to leverage AI tools in their work. Through structured 10-minute assignments, you'll be able to identify candidates who demonstrate AI-first thinking and can effectively use AI to enhance their productivity.
+            Welcome to the AI First Hiring Portal. This tool helps you assess candidates' natural inclination to leverage AI tools in their work through structured 10-minute interview assignments.
           </Typography>
         </Box>
         <Box sx={{ flexShrink: 0, ml: { md: 4 }, mt: { xs: 4, md: 0 }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <RocketLaunchIcon sx={{ fontSize: 100, color: '#2afb7cff' }} />
         </Box>
+      </Paper>
+
+      {/* Tobi Quote Callout */}
+      <Paper sx={{ p: 3, mb: 4, borderLeft: '6px solid #2afb7cff', bgcolor: '#f5f5f5', borderRadius: 2 }}>
+        <Typography variant="h6" color="text.primary" sx={{ fontStyle: 'italic', fontWeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+          "Using AI effectively is now a fundamental expectation of everyone at Shopify." <span style={{ marginLeft: 12, fontStyle: 'normal', fontWeight: 500 }}>- Tobi</span>
+        </Typography>
       </Paper>
 
       {/* Process Steps */}
