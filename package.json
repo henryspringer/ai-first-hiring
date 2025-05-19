@@ -2,7 +2,7 @@
   "name": "ai-interview-assignments",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://henryspringer.github.io/ai-interview-assignments",
+  "homepage": "https://henryspringer.github.io/ai-first-hiring",
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
@@ -18,12 +18,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
