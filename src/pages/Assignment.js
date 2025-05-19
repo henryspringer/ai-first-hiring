@@ -40,12 +40,17 @@ const assignments = {
   sdr: {
     title: 'SDR AI Assignment',
     scenario: [
-      'You have 10 minutes to complete the following tasks:',
-      'Prospect: Stance',
-      'Currently using competitor platform',
-      'Main challenges: inventory management, international expansion',
-      'Create personalized outreach messages for each',
-      'Develop a follow-up sequence',
+      'This assignment is designed to assess your approach to strategic prospecting and outreach.',
+      '',
+      'Scenario: Your target is a mid-market energy drink brand (BUM Energy) with $11M annual revenue currently using a competitor platform (WooCommerce). Their main challenges include limited international expansion capabilities, high platform maintenance costs, and complex inventory management. You have access to information such as their company website, social media profiles, industry reports, and competitor analysis tools.',
+      '',
+      'Task: You have 10 minutes to document a targeted outreach strategy for this prospect.',
+      '',
+      'Focus on demonstrating your process for gathering and analyzing prospect information, how you would tailor your approach, and how you would identify and articulate key benefits.',
+      '',
+      'NOTES:',
+      'You can use any tool or resource to prepare this strategy.',
+      'Please format your response as a one-page word doc summary.'
     ],
     successCriteria: [
       'Uses AI to identify and research prospects',
