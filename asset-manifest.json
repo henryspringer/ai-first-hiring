@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/ai-first-hiring/static/css/main.d7f00bbb.css",
-    "main.js": "/ai-first-hiring/static/js/main.20016a4a.js",
+    "main.js": "/ai-first-hiring/static/js/main.9cb72ae1.js",
     "static/js/453.b30e3e75.chunk.js": "/ai-first-hiring/static/js/453.b30e3e75.chunk.js",
     "index.html": "/ai-first-hiring/index.html",
     "main.d7f00bbb.css.map": "/ai-first-hiring/static/css/main.d7f00bbb.css.map",
-    "main.20016a4a.js.map": "/ai-first-hiring/static/js/main.20016a4a.js.map",
+    "main.9cb72ae1.js.map": "/ai-first-hiring/static/js/main.9cb72ae1.js.map",
     "453.b30e3e75.chunk.js.map": "/ai-first-hiring/static/js/453.b30e3e75.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d7f00bbb.css",
-    "static/js/main.20016a4a.js"
+    "static/js/main.9cb72ae1.js"
   ]
 }
